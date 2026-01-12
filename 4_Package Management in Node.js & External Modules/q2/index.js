@@ -1,37 +1,32 @@
-// Import the modules
 const boxen = require("boxen");
-const chalk = require("chalk");
 
-// Define the message and title
-const message = chalk.bgBlue.white("I am using my first external module!"); // Colored message
+// Message & Title
 const title = "Hurray!!!";
+const message = "I am using my first external module!";
+const fullMessage = `${title}\n${message}`;
 
-// Box styles options
-const classicOptions = {
-  title: title,
+//  Classic (Default Style)
+const classicBox = boxen(fullMessage, {
   padding: 1,
   margin: 1,
-};
+  borderStyle: "classic",
+});
 
-const singleDoubleOptions = {
-  title: title,
-  borderStyle: "singleDouble", // Mixed single and double borders
+//  SingleDouble Style
+const singleDoubleBox = boxen(fullMessage, {
   padding: 1,
   margin: 1,
-};
+  borderStyle: "singleDouble",
+});
 
-const roundOptions = {
-  title: title,
-  borderStyle: "round", // Rounded corners
+//  Round Borders
+const roundBox = boxen(fullMessage, {
   padding: 1,
   margin: 1,
-};
+  borderStyle: "round",
+});
 
-// Print message inside Classic box
-console.log(boxen(message, classicOptions));
-
-// Print message inside SingleDouble box
-console.log(boxen(message, singleDoubleOptions));
-
-// Print message inside Round box
-console.log(boxen(message, roundOptions));
+// Print All
+console.log(classicBox);
+console.log(singleDoubleBox);
+console.log(roundBox);
