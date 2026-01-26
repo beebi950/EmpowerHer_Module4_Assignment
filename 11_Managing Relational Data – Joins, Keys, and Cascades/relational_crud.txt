@@ -1,0 +1,86 @@
+
+CREATE TABLE users (
+id SERIAL PRIMARY KEY,
+name TEXT NOT NULL,
+email TEXT UNIQUE NOT NULL,
+created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE orders (
+id SERIAL PRIMARY KEY,
+user_id INTEGER REFERENCES users(id) ON DELETE RESTRICT,
+amount INTEGER NOT NULL,
+status TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO users (name, email)
+VALUES
+('Aarav Kumar', 'aarav@example.com'),
+('Riya Sharma', 'riya@example.com'),
+('Vikram Singh', 'vikram@example.com'),
+('Neha Patel', 'neha@example.com'),
+('John David', 'john@example.com');
+
+INSERT INTO orders (user_id, amount, status)
+VALUES
+(1, 1200, 'pending'),
+(1, 1500, 'completed'),
+(2, 900, 'pending'),
+(2, 2000, 'completed'),
+(3, 300, 'pending'),
+(3, 400, 'pending'),
+(4, 5000, 'completed'),
+(5, 2500, 'pending'),
+(5, 1800, 'completed'),
+(1, 2200, 'pending');
+
+
+select * from users;
+
+select * from orders;
+
+select * from orders where user_id=1;
+
+SELECT u.id, u.name, COUNT(o.id) AS total_orders
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id
+HAVING COUNT(o.id) > 1;
+
+SELECT u.id, u.name, SUM(o.amount) AS total_amount
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id;
+
+update users
+set email ='aarac.new@example.com'
+where id=1;
+
+update orders
+set status='completed'
+where id=3;
+
+delete from orders where id=6;
+
+delete from orders where user_id=3;
+
+DELETE FROM users WHERE id = 1;
+
+select* from users;
+
+select* from orders;
+
+
+CONCEPTUAL QUESTION 
+=========================================
+
+
+-- Why should orders not be stored inside the users table?
+-- Because orders follow a one-to-many relationship.
+-- Storing orders inside users would:
+-- 1. Break normalization rules.
+-- 2. Cause data duplication.
+-- 3. Make queries inefficient.
+-- 4. Make updates and deletions complex.
+-- Orders must be kept in a separate table with a foreign key to ensure clean relational design.
